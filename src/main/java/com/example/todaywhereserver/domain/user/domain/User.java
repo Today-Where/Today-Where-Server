@@ -1,14 +1,16 @@
 package com.example.todaywhereserver.domain.user.domain;
 
+import com.example.todaywhereserver.domain.survey.domain.Survey;
 import com.example.todaywhereserver.domain.travel.domain.Travel;
 import com.example.todaywhereserver.global.entity.BaseIdEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -31,11 +33,16 @@ public class User extends BaseIdEntity {
     @OneToMany
     private List<Travel> travel;
 
-    public User(String email, String password, Integer age, String sex, List<Travel> travel) {
+    @OneToMany
+    private List<Survey> survey;
+
+    @Builder
+    public User(String email, String password, Integer age, String sex, List<Travel> travel, List<Survey> survey) {
         this.email = email;
         this.password = password;
         this.age = age;
         this.sex = sex;
         this.travel = travel;
+        this.survey = survey;
     }
 }
