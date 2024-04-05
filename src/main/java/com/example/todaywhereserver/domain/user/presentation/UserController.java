@@ -19,7 +19,7 @@ public class UserController {
     private final UserSignupService userSignupService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/signup")
+    @PostMapping
     public void signup(@RequestBody @Valid UserSignupRequest request) {
         userSignupService.execute(request);
     }
