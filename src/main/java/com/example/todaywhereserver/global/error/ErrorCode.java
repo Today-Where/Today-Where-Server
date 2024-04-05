@@ -9,12 +9,13 @@ public enum ErrorCode {
     EXPIRED_JWT(401, "Expired Jwt"),
     SIGNATURE_JWT(401, "Signature Jwt"),
     INVALID_JWT(401, "Invalid Jwt"),
+    PASSWORD_MISMATCH(401, "Password Mismatch"),
 
-    USER_NOT_FOUND(404, "유저를 찾을 수 없습니다."),
+    USER_NOT_FOUND(404, "User Not Found"),
 
-    USER_EXIST(409, "유저가 존재합니다."),
+    USER_EXIST(409, "user Exist"),
 
-    INTERNAL_SERVER_ERROR(500, "서버 내부의 에러입니다.");
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
     private final int status;
     private final String message;

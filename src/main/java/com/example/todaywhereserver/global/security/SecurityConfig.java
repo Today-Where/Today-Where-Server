@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .authorizeRequests()
 
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
 

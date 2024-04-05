@@ -1,9 +1,12 @@
 package com.example.todaywhereserver.domain.user.facade;
 
+import com.example.todaywhereserver.domain.auth.exception.PasswordMismatchException;
 import com.example.todaywhereserver.domain.user.domain.User;
 import com.example.todaywhereserver.domain.user.domain.repository.UserRepository;
 import com.example.todaywhereserver.domain.user.exception.UserExistException;
+import com.example.todaywhereserver.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -12,10 +15,24 @@ import java.util.Optional;
 @Component
 public class UserFacade {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void checkUserExist(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent())
             throw UserExistException.EXCEPTION;
     }
+
+    public void checkPassword(User user, String password){
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw PasswordMismatchException.EXCEPTION;
+        }
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+
 }
