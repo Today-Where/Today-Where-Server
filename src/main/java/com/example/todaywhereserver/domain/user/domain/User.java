@@ -45,4 +45,10 @@ public class User extends BaseIdEntity {
         this.travel = travel;
         this.survey = survey;
     }
+
+    public void update(String email, Integer age, String sex) {
+        this.email = email;
+        this.age = age;
+        this.sex = sex;
+    }
 }
