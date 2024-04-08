@@ -7,6 +7,7 @@ import com.example.todaywhereserver.domain.user.exception.UserExistException;
 import com.example.todaywhereserver.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -19,12 +20,12 @@ public class UserFacade {
 
     public void checkUserExist(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        if(user.isPresent())
+        if (user.isPresent())
             throw UserExistException.EXCEPTION;
     }
 
-    public void checkPassword(User user, String password){
-        if(!passwordEncoder.matches(password, user.getPassword())){
+    public void checkPassword(User user, String password) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw PasswordMismatchException.EXCEPTION;
         }
     }
@@ -34,5 +35,8 @@ public class UserFacade {
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
-
+    public User getCurrentUser () {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findByEmail(email);
+    }
 }
