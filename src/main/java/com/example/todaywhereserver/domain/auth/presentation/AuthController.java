@@ -1,4 +1,4 @@
-package com.example.todaywhereserver.domain.auth.presentation.dto;
+package com.example.todaywhereserver.domain.auth.presentation;
 
 import com.example.todaywhereserver.domain.auth.presentation.dto.request.UserLoginRequest;
 import com.example.todaywhereserver.domain.auth.presentation.dto.response.TokenResponse;
