@@ -1,6 +1,6 @@
 package com.example.todaywhereserver.domain.user.domain;
 
-import com.example.todaywhereserver.domain.survey.domain.Survey;
+import com.example.todaywhereserver.domain.keyword.domain.Keyword;
 import com.example.todaywhereserver.domain.travel.domain.Travel;
 import com.example.todaywhereserver.global.entity.BaseIdEntity;
 import lombok.Builder;
@@ -34,16 +34,16 @@ public class User extends BaseIdEntity {
     private List<Travel> travel;
 
     @OneToMany
-    private List<Survey> survey;
+    private List<Keyword> keyword;
 
     @Builder
-    public User(String email, String password, Integer age, String sex, List<Travel> travel, List<Survey> survey) {
+    public User(String email, String password, Integer age, String sex, List<Travel> travel, List<Keyword> keyword) {
         this.email = email;
         this.password = password;
         this.age = age;
         this.sex = sex;
         this.travel = travel;
-        this.survey = survey;
+        this.keyword = keyword;
     }
 
     public void update(String email, Integer age, String sex) {
