@@ -20,4 +20,8 @@ public class Keyword extends BaseIdEntity {
     public Keyword(String keyword) {
         this.keyword = keyword;
     }
+
+    public void update(String keyword) {
+        this.keyword = keyword;
+    }
 }

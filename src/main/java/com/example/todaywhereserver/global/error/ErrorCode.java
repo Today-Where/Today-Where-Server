@@ -11,6 +11,7 @@ public enum ErrorCode {
     SIGNATURE_JWT(401, "Signature Jwt"),
     INVALID_JWT(401, "Invalid Jwt"),
     PASSWORD_MISMATCH(401, "Password Mismatch"),
+    WRITER_MISMATCH(401, "Writer Mismatch"),
 
     KEYWORD_NOT_FOUND(404, "Keyword Not Found"),
     USER_NOT_FOUND(404, "User Not Found"),
