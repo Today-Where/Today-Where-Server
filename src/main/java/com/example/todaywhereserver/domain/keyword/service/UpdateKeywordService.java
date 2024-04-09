@@ -7,6 +7,7 @@ import com.example.todaywhereserver.domain.keyword.presentation.dto.request.Upda
 import com.example.todaywhereserver.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -15,13 +16,12 @@ public class UpdateKeywordService {
     private final KeywordFacade keywordFacade;
     private final UserFacade userFacade;
 
+    @Transactional
     public void execute(Long id, UpdateKeywordRequest request) {
         Keyword keyword = keywordFacade.findById(id);
 
         userFacade.checkWriter(keyword);
 
         keyword.update(request.getKeyword());
-
-        keywordRepository.save(keyword);
     }
 }
