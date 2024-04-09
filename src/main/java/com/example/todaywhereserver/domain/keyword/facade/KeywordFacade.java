@@ -15,4 +15,9 @@ public class KeywordFacade {
         return keywordRepository.findByKeyword(keyword)
                 .orElseThrow(() -> KeywordNotFoundException.EXCEPTION);
     }
+
+    public Keyword findById(Long id) {
+        return keywordRepository.findById(id)
+                .orElseThrow(() -> KeywordNotFoundException.EXCEPTION);
+    }
 }

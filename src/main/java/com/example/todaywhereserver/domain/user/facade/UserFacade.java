@@ -1,13 +1,15 @@
 package com.example.todaywhereserver.domain.user.facade;
 
 import com.example.todaywhereserver.domain.auth.exception.PasswordMismatchException;
+import com.example.todaywhereserver.domain.keyword.domain.Keyword;
+import com.example.todaywhereserver.domain.keyword.exception.WriterMismatchedException;
 import com.example.todaywhereserver.domain.user.domain.User;
 import com.example.todaywhereserver.domain.user.domain.repository.UserRepository;
 import com.example.todaywhereserver.domain.user.exception.UserExistException;
 import com.example.todaywhereserver.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -38,5 +40,14 @@ public class UserFacade {
     public User getCurrentUser () {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return findByEmail(email);
+    }
+
+    public void checkWriter(Keyword keyword) {
+        User user = userRepository.findByKeyword(keyword)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        if(!user.equals(getCurrentUser())) {
+            throw WriterMismatchedException.EXCEPTION;
+        }
     }
 }
