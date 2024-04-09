@@ -12,9 +12,11 @@ public enum ErrorCode {
     INVALID_JWT(401, "Invalid Jwt"),
     PASSWORD_MISMATCH(401, "Password Mismatch"),
     WRITER_MISMATCH(401, "Writer Mismatch"),
+    INVALID_REFRESH_TOKEN(401, "Invalid Refresh Token"),
 
     KEYWORD_NOT_FOUND(404, "Keyword Not Found"),
     USER_NOT_FOUND(404, "User Not Found"),
+    REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found"),
 
     USER_EXIST(409, "user Exist"),
 

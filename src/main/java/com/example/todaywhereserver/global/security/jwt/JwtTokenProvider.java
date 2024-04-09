@@ -1,5 +1,7 @@
 package com.example.todaywhereserver.global.security.jwt;
 
+import com.example.todaywhereserver.domain.auth.domain.RefreshToken;
+import com.example.todaywhereserver.domain.auth.domain.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +14,26 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private static final String ACCESS_KEY = "access";
+    private static final String REFRESH_KEY = "refresh";
 
     private final JwtProperties jwtProperties;
+    private final RefreshTokenRepository refreshtokenRepository;
 
     public String generateAccessToken(String email) {
         return generateToken(email, ACCESS_KEY, jwtProperties.getAccessExp());
+    }
+
+    public String generateRefreshToken(String email){
+        String refreshToken =  generateToken(email, REFRESH_KEY, jwtProperties.getRefreshExp());
+
+        refreshtokenRepository.save(RefreshToken.builder()
+                .email(email)
+                .token(refreshToken)
+                .ttl(jwtProperties.getRefreshExp() * 1000)
+                .build()
+        );
+
+        return refreshToken;
     }
 
 
