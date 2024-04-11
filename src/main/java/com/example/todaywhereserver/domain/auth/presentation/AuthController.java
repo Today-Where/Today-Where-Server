@@ -31,7 +31,7 @@ public class AuthController {
         return tokenRefreshService.execute(refreshToken);
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/logout")
     public void logout(@RequestHeader("Refresh-Token") String refreshToken){
         userLogoutService.execute(refreshToken);
