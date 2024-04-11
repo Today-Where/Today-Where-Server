@@ -38,7 +38,6 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/tokens").permitAll()
                 .antMatchers(HttpMethod.PATCH, "/auth/tokens").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/auth/logout").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
 
