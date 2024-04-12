@@ -1,9 +1,8 @@
 package com.example.todaywhereserver.domain.keyword.service;
 
 import com.example.todaywhereserver.domain.keyword.domain.Keyword;
-import com.example.todaywhereserver.domain.keyword.domain.repository.KeywordRepository;
 import com.example.todaywhereserver.domain.keyword.facade.KeywordFacade;
-import com.example.todaywhereserver.domain.keyword.presentation.dto.request.UpdateKeywordRequest;
+import com.example.todaywhereserver.domain.user.domain.User;
 import com.example.todaywhereserver.domain.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,16 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class UpdateKeywordService {
+public class DeleteKeywordService {
     private final KeywordFacade keywordFacade;
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(Long id, UpdateKeywordRequest request) {
+    public void execute(Long id){
         Keyword keyword = keywordFacade.findById(id);
 
-        userFacade.checkWriter(keyword);
+        User user = userFacade.getCurrentUser();
 
-        keyword.update(request.getKeyword());
+        user.deleteKeyword(keyword);
     }
 }

@@ -7,9 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -31,9 +33,11 @@ public class User extends BaseIdEntity {
     private String sex;
 
     @OneToMany
+    @JoinColumn(name = "userId")
     private List<Travel> travel;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "userId")
     private List<Keyword> keyword;
 
     @Builder
@@ -50,5 +54,9 @@ public class User extends BaseIdEntity {
         this.email = email;
         this.age = age;
         this.sex = sex;
+    }
+
+    public void deleteKeyword(Keyword keyword){
+        this.keyword.remove(keyword);
     }
 }
