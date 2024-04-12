@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UpdateKeywordService {
-    private final KeywordRepository keywordRepository;
     private final KeywordFacade keywordFacade;
     private final UserFacade userFacade;
 
