@@ -15,6 +15,9 @@ public class UpdateUserInfoService {
     @Transactional
     public void execute(UpdateUserInfoRequest request) {
         User user = userFacade.getCurrentUser();
+
+        userFacade.checkUserExist(request.getEmail());
+
         user.update(request.getEmail(), request.getAge(), request.getSex());
     }
 }
