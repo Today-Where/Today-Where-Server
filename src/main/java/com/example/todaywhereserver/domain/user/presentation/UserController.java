@@ -2,7 +2,6 @@ package com.example.todaywhereserver.domain.user.presentation;
 
 import com.example.todaywhereserver.domain.user.presentation.dto.request.UpdateUserInfoRequest;
 import com.example.todaywhereserver.domain.user.presentation.dto.request.UserSignupRequest;
-import com.example.todaywhereserver.domain.user.presentation.dto.request.UserWithdrawalRequest;
 import com.example.todaywhereserver.domain.user.presentation.dto.response.UserInfoResponse;
 import com.example.todaywhereserver.domain.user.service.UserInfoService;
 import com.example.todaywhereserver.domain.user.service.UpdateUserInfoService;
@@ -47,7 +46,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public void userWithdrawal(@RequestBody @Valid UserWithdrawalRequest request) {
-        userWithdrawalService.execute(request);
+    public void userWithdrawal() {
+        userWithdrawalService.execute();
     }
 }
