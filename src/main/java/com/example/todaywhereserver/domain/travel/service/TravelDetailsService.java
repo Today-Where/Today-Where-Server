@@ -18,7 +18,7 @@ public class TravelDetailsService {
 
         return TravelDetailsResponse.builder()
                 .name(travel.getName())
-                .description(travel.getDescription())
+                .content(travel.getContent())
                 .address(travel.getAddress())
                 .build();
     }
