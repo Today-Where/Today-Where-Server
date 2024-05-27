@@ -2,6 +2,7 @@ package com.example.todaywhereserver.domain.survey.presentation;
 
 import com.example.todaywhereserver.domain.survey.domain.Survey;
 import com.example.todaywhereserver.domain.survey.presentation.dto.request.SurveyAnswerRequest;
+import com.example.todaywhereserver.domain.survey.presentation.dto.response.SurveyAnswerResponse;
 import com.example.todaywhereserver.domain.survey.presentation.dto.response.SurveyDetailsResponse;
 import com.example.todaywhereserver.domain.survey.service.SurveyAnswerService;
 import com.example.todaywhereserver.domain.survey.service.SurveyDetailsService;
@@ -33,7 +34,7 @@ public class SurveyController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/answer")
-    public List<String> surveyAnswer(@RequestBody @Valid SurveyAnswerRequest request){
+    public SurveyAnswerResponse surveyAnswer(@RequestBody @Valid SurveyAnswerRequest request){
         return surveyAnswerService.execute(request);
     }
 }

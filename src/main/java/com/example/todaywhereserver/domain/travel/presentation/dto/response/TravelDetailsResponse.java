@@ -9,6 +9,6 @@ import lombok.Getter;
 @Getter
 public class TravelDetailsResponse {
     private final String name;
-    private final String description;
+    private final String content;
     private final String address;
 }

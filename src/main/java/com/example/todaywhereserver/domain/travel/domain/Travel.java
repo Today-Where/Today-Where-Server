@@ -19,15 +19,15 @@ public class Travel extends BaseIdEntity {
     private String name;
 
     @NotBlank
-    private String description;
+    private String content;
 
     @NotBlank
     private String address;
 
     @Builder
-    public Travel(String name, String description, String address){
+    public Travel(String name, String content, String address){
         this.name = name;
-        this.description = description;
+        this.content = content;
         this.address = address;
     }
 }

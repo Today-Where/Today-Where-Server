@@ -2,6 +2,7 @@ package com.example.todaywhereserver.domain.survey.service;
 
 
 import com.example.todaywhereserver.domain.survey.presentation.dto.request.SurveyAnswerRequest;
+import com.example.todaywhereserver.domain.survey.presentation.dto.response.SurveyAnswerResponse;
 import com.example.todaywhereserver.domain.travel.domain.Travel;
 import com.example.todaywhereserver.domain.travel.domain.TravelRepository;
 import com.example.todaywhereserver.domain.user.domain.User;
@@ -11,9 +12,6 @@ import io.github.flashvayne.chatgpt.service.ChatgptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class SurveyAnswerService {
     private final UserRepository userRepository;
 
     @Transactional
-    public List<String> execute(SurveyAnswerRequest request){
+    public SurveyAnswerResponse execute(SurveyAnswerRequest request){
         StringBuilder prompt = new StringBuilder();
 
         for(String answers : request.getKeyword()) {
@@ -33,27 +31,46 @@ public class SurveyAnswerService {
             prompt.append(" ");
         }
 
-        prompt.append("받은 각각의 단어들은 여행지를 추천받고자 하는 사람이 입력한 키워드 입니다. 받은 각각의 키워드들을 모두 만족하는 대한민국 내의 실제로 존재하는 여행지 추천을 해주세요. 추천받을 여행지 개수는 1개 이상, 5개 이하입니다. 결과는 항상 여행지이름, 여행지이름, 여행지이름... , 여행지이름 형식이여야 합니다 각각의 여행지를 , 로 나누어 주세요. 또한 결과에는 줄넘김이 없어야 합니다. 주어진 형식 외의 설명과 같은 내용이 들어가서는 안됩니다. 글자 수 제한은 35자입니다.");
+        prompt.append("받은 각각의 단어들은 여행지를 추천받고자 하는 사람이 입력한 키워드 입니다. 받은 각각의 키워드들을 만족하는 대한민국 내의 실제로 존재하는 여행지 추천을 해주세요. 추천받을 여행지 개수는 1개입니다. 결과는 항상 여행지이름만 보내야 합니다. 또한 결과에는 줄넘김이 없어야 합니다. 여행지 이름 외의 설명과 같은 내용이 들어가서는 안됩니다. 글자 수 제한은 10자입니다.");
         String gptAnswer = chatgptService.sendMessage(prompt.toString());
-        while(gptAnswer.isBlank() || gptAnswer.length() > 40 || gptAnswer.length() < 10 || gptAnswer.contains("[^가-힣,\\s]+") || !gptAnswer.contains(",")) gptAnswer = chatgptService.sendMessage(prompt.toString());
 
-        List<String> travelList = Arrays.stream(gptAnswer.replaceAll("(여행지이름|여행지|\\n|\")", "").trim().split(", "))
-                .filter(travel -> travel.length() <= 9)
-                .toList();
+        while(gptAnswer.isBlank() || gptAnswer.length() > 10 || gptAnswer.contains("[^가-힣\\s]+"))
+            gptAnswer = chatgptService.sendMessage(prompt.toString());
+
+        String name = gptAnswer.replaceAll("(여행지이름|여행지|\\n|\")", "");
+
+        String gptContent = chatgptService.sendMessage(name + " 이 여행지에 대한 설명을 한글을 사용해 45자 이내로 해주세요.");
+
+        while(gptContent.isBlank() || gptContent.contains("[^가-힣.,\\s]+"))
+            gptContent = chatgptService.sendMessage(name + " 이 여행지에 대한 설명을 한글을 사용해 95자 이내로 해주세요.");
+
+        String content = gptContent.replaceAll("\\n|\"", "");
+
+        String gptAddress = chatgptService.sendMessage(name + " 한글로 이 여행지의 주소를 알려주세요. 주소 외에 다른 내용이 포함되지 않게 해주세요");
+
+        while(gptAddress.isBlank() || gptAddress.contains("[^가-힣0-9\\s]+") || gptAddress.length() > 30)
+            gptAddress = chatgptService.sendMessage(name + " 한글로 이 여행지의 주소를 알려주세요. 주소 외에 다른 내용이 포함되지 않게 해주세요");
+
+        String address = gptAddress.replaceAll("\\n|\"|\\.", "");
 
         User user = userFacade.getCurrentUser();
-        for(String travels : travelList) {
-            Travel travel = Travel.builder()
-                    .name(travels)
-                    .build();
 
-            travelRepository.save(travel);
+        Travel travel = Travel.builder()
+                .name(name)
+                .content(content)
+                .address(address)
+                .build();
 
-            user.getTravel().add(travel);
+        travelRepository.save(travel);
 
-            userRepository.save(user);
-        }
+        user.getTravel().add(travel);
 
-        return travelList;
+        userRepository.save(user);
+
+        return SurveyAnswerResponse.builder()
+                .name(name)
+                .content(content)
+                .address(address)
+                .build();
     }
 }
