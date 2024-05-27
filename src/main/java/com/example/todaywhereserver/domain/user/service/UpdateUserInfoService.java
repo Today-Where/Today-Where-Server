@@ -16,8 +16,6 @@ public class UpdateUserInfoService {
     public void execute(UpdateUserInfoRequest request) {
         User user = userFacade.getCurrentUser();
 
-        userFacade.checkUserExist(request.getEmail());
-
-        user.update(request.getEmail(), request.getAge(), request.getSex());
+        user.update(request.getAge(), request.getSex());
     }
 }

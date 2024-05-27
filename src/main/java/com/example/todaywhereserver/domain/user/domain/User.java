@@ -50,8 +50,7 @@ public class User extends BaseIdEntity {
         this.keyword = keyword;
     }
 
-    public void update(String email, Integer age, String sex) {
-        this.email = email;
+    public void update(Integer age, String sex) {
         this.age = age;
         this.sex = sex;
     }
