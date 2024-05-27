@@ -8,5 +8,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class TravelDetailsResponse {
-    private final String name;
+    private final String address;
 }
