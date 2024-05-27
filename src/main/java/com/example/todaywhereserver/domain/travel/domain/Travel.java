@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
 
 
 @Getter
@@ -17,8 +18,16 @@ public class Travel extends BaseIdEntity {
     @Column(length = 100, nullable = false)
     private String name;
 
+    @NotBlank
+    private String description;
+
+    @NotBlank
+    private String address;
+
     @Builder
-    public Travel(String name){
+    public Travel(String name, String description, String address){
         this.name = name;
+        this.description = description;
+        this.address = address;
     }
 }
